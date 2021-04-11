@@ -3,18 +3,19 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>178d978f-15b0-4378-aced-f23df14671ea</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.19" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.20" />
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
-    <PackageReference Include="Hangfire.HttpJob" Version="3.5.7" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.7.19" />
-    <PackageReference Include="Hangfire.Tags.SqlServer" Version="1.7.0" />
+    <PackageReference Include="Hangfire.HttpJob" Version="3.5.9" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.20" />
+    <PackageReference Include="Hangfire.Tags.SqlServer" Version="1.7.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.1" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.11.0" />
-    <PackageReference Include="TimeZoneConverter" Version="3.4.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.5.0" />
   </ItemGroup>
 
   <ItemGroup>
