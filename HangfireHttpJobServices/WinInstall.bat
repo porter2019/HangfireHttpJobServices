@@ -12,6 +12,6 @@ exit /B
 if exist "%temp%\getadmin.vbs" ( del "%temp%\getadmin.vbs" )
 
 set SERVICE_NAME=Hangfire.
-sc create %SERVICE_NAME%Service binpath= ""%~dp0HangfireHttpJobServices.exe" -p 3810" displayname= "%SERVICE_NAME%Service" start= demand
+sc create %SERVICE_NAME%Service binpath= ""%~dp0HangfireHttpJobServices.exe" -p 3810" displayname= "%SERVICE_NAME%Service" start= auto
 sc start %SERVICE_NAME%Service
 pause

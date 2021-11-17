@@ -31,6 +31,14 @@ namespace HangfireHttpJobServices
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHangfire(Configuration);
+
+            services.AddHangfireServer(options => { 
+                options.ServerTimeout = TimeSpan.FromMinutes(4);
+                options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
+                options.ShutdownTimeout = TimeSpan.FromMinutes(30);//超时时间
+                options.Queues = JsonConfig.GetSection("HangfireQueues").Get<List<string>>().ToArray();
+                options.WorkerCount = Math.Max(Environment.ProcessorCount, 40);//工作线程数，当前允许的最大线程，默认20
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,15 +47,15 @@ namespace HangfireHttpJobServices
             //强制显示中文
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
 
-            var queues = JsonConfig.GetSection("HangfireQueues").Get<List<string>>().ToArray();
-            app.UseHangfireServer(new BackgroundJobServerOptions
-            {
-                ServerTimeout = TimeSpan.FromMinutes(4),
-                SchedulePollingInterval = TimeSpan.FromSeconds(15), //秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
-                ShutdownTimeout = TimeSpan.FromMinutes(30), //超时时间
-                Queues = queues, //队列
-                WorkerCount = Math.Max(Environment.ProcessorCount, 40) //工作线程数，当前允许的最大线程，默认20
-            });
+            //var queues = JsonConfig.GetSection("HangfireQueues").Get<List<string>>().ToArray();
+            //app.UseHangfireServer(new BackgroundJobServerOptions
+            //{
+            //    ServerTimeout = TimeSpan.FromMinutes(4),
+            //    SchedulePollingInterval = TimeSpan.FromSeconds(15), //秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
+            //    ShutdownTimeout = TimeSpan.FromMinutes(30), //超时时间
+            //    Queues = queues, //队列
+            //    WorkerCount = Math.Max(Environment.ProcessorCount, 40) //工作线程数，当前允许的最大线程，默认20
+            //});
 
             var hangfireStartUpPath = JsonConfig.GetSection("HangfireStartUpPath").Get<string>();
             if (string.IsNullOrWhiteSpace(hangfireStartUpPath)) hangfireStartUpPath = "/job";
