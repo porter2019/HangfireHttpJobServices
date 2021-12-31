@@ -1,12 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HangfireHttpJobServices
+﻿namespace HangfireHttpJobServices
 {
     public static class ApplicationExtenssion
     {
@@ -15,24 +7,21 @@ namespace HangfireHttpJobServices
         /// </summary>
         /// <param name="appBuilder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseAppStartup(this IApplicationBuilder appBuilder)
+        public static IApplicationBuilder UseAppStartup(this IApplicationBuilder appBuilder,IHostApplicationLifetime lifeTime)
         {
             var services = appBuilder.ApplicationServices.CreateScope().ServiceProvider;
 
             var logger = NLog.LogManager.GetCurrentClassLogger();
 
-            var lifeTime = services.GetService<IHostApplicationLifetime>();
-
-
             var assemblyName = AppDomain.CurrentDomain.FriendlyName;
 
             lifeTime.ApplicationStarted.Register(() =>
             {
-                logger.Info("【ApplicationStarted】");
+                logger.Info("【Application Started】");
             });
             lifeTime.ApplicationStopping.Register(() =>
             {
-                logger.Info("【ApplicationStopping】");
+                logger.Info("【Application Stopping】");
             });
 
             return appBuilder;

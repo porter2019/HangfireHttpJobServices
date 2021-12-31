@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>178d978f-15b0-4378-aced-f23df14671ea</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.27" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
-    <PackageReference Include="Hangfire.HttpJob" Version="3.6.4" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.7.27" />
+    <PackageReference Include="Hangfire.HttpJob" Version="3.6.5" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
     <PackageReference Include="Hangfire.Tags.SqlServer" Version="1.8.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />

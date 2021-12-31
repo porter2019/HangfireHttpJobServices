@@ -7,3 +7,5 @@
 默认服务名称`Hangfire.Service`, `binpath`中通过指定参数`-p 3810` 设置程序访问端口为3810
 
 > 注意，服务安装运行后，运行的`Environment`是`Production`，注意配置文件
+>
+> 安装运行后的环境是Production的，使用的是`appsettings.json`和`nlog.config`，Development配置使用不到
