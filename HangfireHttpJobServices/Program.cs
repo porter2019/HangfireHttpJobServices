@@ -1,8 +1,8 @@
 ﻿using Hangfire;
 using Hangfire.Dashboard.BasicAuthorization;
 using Hangfire.HttpJob;
-using Hangfire.SqlServer;
-using Hangfire.Tags.SqlServer;
+using Hangfire.MySql;
+using Hangfire.Tags.MySql;
 using NLog;
 using NLog.Web;
 using System.Text.RegularExpressions;
@@ -45,19 +45,29 @@ try
 
     #region Hanfire
 
+    var mysqlOption = new Hangfire.MySql.MySqlStorageOptions //这个是mysqlstorage的相关配置
+    {
+        TransactionIsolationLevel = System.Transactions.IsolationLevel.ReadCommitted,
+        QueuePollInterval = TimeSpan.FromSeconds(15),
+        JobExpirationCheckInterval = TimeSpan.FromHours(1),
+        CountersAggregateInterval = TimeSpan.FromMinutes(5),
+        PrepareSchemaIfNecessary = true,
+        DashboardJobListLimit = 50000,
+        TransactionTimeout = TimeSpan.FromMinutes(1),
+        TablesPrefix = "hangfire_",
+    };
     builder.Services.AddHangfire(globalConfiguration =>
     {
         globalConfiguration
-                .UseSqlServerStorage(builder.Configuration.GetSection("HangfireSqlserverConnectionString").Get<string>(), new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true
-                })
-                .UseTagsWithSql()
+                //.UseSqlServerStorage(builder.Configuration.GetSection("HangfireSqlserverConnectionString").Get<string>(), new SqlServerStorageOptions
+                //{
+                //    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                //    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                //    QueuePollInterval = TimeSpan.Zero,
+                //    UseRecommendedIsolationLevel = true,
+                //    DisableGlobalLocks = true
+                //})
+                .UseStorage(new MySqlStorage(builder.Configuration.GetSection("HangfireMysqlConnectionString").Get<string>(), mysqlOption))
                 .UseHangfireHttpJob(new HangfireHttpJobOptions
                 {
                     MailOption = new MailOption
@@ -70,7 +80,8 @@ try
                     },
                     DefaultRecurringQueueName = builder.Configuration.GetSection("DefaultRecurringQueueName").Get<string>(),
                     DefaultBackGroundJobQueueName = "DEFAULT",
-                });
+                })
+                .UseTagsWithMySql(sqlOptions: mysqlOption);
     });
 
     builder.Services.AddHangfireServer(options =>
